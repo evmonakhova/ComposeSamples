@@ -9,15 +9,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,7 +33,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(content: @Composable () -> Unit) {
     BasicsCodelabAppTheme {
-        Surface(color = Color.Yellow) {
+        Surface(color = MaterialTheme.colors.surface) {
             content()
         }
     }
@@ -49,11 +44,9 @@ fun MyScreenContent(names: List<String> = listOf("Android", "there", "Alyona")) 
     val counterState = remember { mutableStateOf(0) }
 
     Column(
-        modifier = Modifier
-            .width(150.dp)
-            .fillMaxHeight()
+        modifier = Modifier.fillMaxHeight()
     ) {
-        NameList(names = List(1000) { "Hello Android #$it" })
+        NameList(names = List(1000) { "#$it" })
         Counter(
             count = counterState.value,
             updateCount = { newCount ->
@@ -83,7 +76,8 @@ fun Greeting(name: String) {
         modifier = Modifier
             .padding(24.dp)
             .background(color = backgroundColor)
-            .clickable(onClick = { isSelected = !isSelected })
+            .clickable(onClick = { isSelected = !isSelected }),
+        style = MaterialTheme.typography.body1
     )
 }
 
