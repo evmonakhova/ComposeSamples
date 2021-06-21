@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,18 +44,27 @@ fun MyScreenContent(names: List<String> = listOf("Android", "there", "Alyona")) 
     val counterState = remember { mutableStateOf(0) }
 
     Column(
-        modifier = Modifier.width(150.dp)
+        modifier = Modifier
+            .width(150.dp)
+            .fillMaxHeight()
     ) {
-        for (name in names) {
-            Greeting(name = name)
-            Divider(color = Color.Black)
-        }
+        NameList(names = List(1000) { "Hello Android #$it" })
         Counter(
             count = counterState.value,
             updateCount = { newCount ->
                 counterState.value = newCount
             }
         )
+    }
+}
+
+@Composable
+fun NameList(names: List<String>, modifier: Modifier = Modifier) {
+    LazyColumn(modifier = modifier) {
+        items(items = names) { name ->
+            Greeting(name = name)
+            Divider(color = Color.Black)
+        }
     }
 }
 
@@ -70,7 +79,10 @@ fun Greeting(name: String) {
 fun Counter(count: Int, updateCount: (Int) -> Unit) {
     Button(
         modifier = Modifier.padding(24.dp),
-        onClick = { updateCount(count + 1) }
+        onClick = { updateCount(count + 1) },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = if (count > 5) Color.Green else Color.White
+        )
     ) {
         Text("I've been clicked $count times")
     }
