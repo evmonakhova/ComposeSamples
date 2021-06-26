@@ -6,6 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,6 +16,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,13 +25,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.layouts.ui.theme.LayoutsAppTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             LayoutsAppTheme {
-                PhotographerCard()
                 LayoutsCodelab()
             }
         }
@@ -53,29 +58,68 @@ fun LayoutsCodelab() {
     }
 }
 
-@Preview
 @Composable
-fun LayoutsCodelabPreview() {
-    LayoutsAppTheme {
-        LayoutsCodelab()
+fun BodyContent(innerPadding: PaddingValues) {
+    val listSize = 100
+    val scrollState = rememberLazyListState()
+
+    Column(
+        Modifier
+            .padding(innerPadding)
+            .padding(16.dp)) {
+        ButtonsRow(listSize, scrollState)
+        ImageList(listSize, scrollState)
     }
 }
 
 @Composable
-private fun BodyContent(innerPadding: PaddingValues) {
-    Column(modifier = Modifier.padding(innerPadding).padding(16.dp)) {
-        Text(text = "Hi there!")
-        Text(text = "Thanks for going through the Layouts codelab")
+fun ButtonsRow(listSize: Int, scrollState: LazyListState) {
+    val coroutineScope = rememberCoroutineScope()
+
+    Row {
+        Button(
+            modifier = Modifier.padding(8.dp),
+            onClick = {
+                coroutineScope.launch {
+                    scrollState.animateScrollToItem(0)
+                }
+            }
+        ) {
+            Text("Scroll to the top")
+        }
+
+        Button(
+            modifier = Modifier.padding(8.dp),
+            onClick = {
+                coroutineScope.launch {
+                    scrollState.animateScrollToItem(listSize - 1)
+                }
+            }
+        ) {
+            Text("Scroll to the end")
+        }
     }
 }
 
 @Composable
-fun PhotographerCard(modifier: Modifier = Modifier) {
+fun ImageList(listSize: Int, scrollState: LazyListState) {
+    LazyColumn(
+        modifier = Modifier.background(color = MaterialTheme.colors.surface),
+        state = scrollState
+    ) {
+        items(listSize) {
+            PhotographerCard(index = it)
+        }
+    }
+}
+
+@Composable
+fun PhotographerCard(modifier: Modifier = Modifier, index: Int) {
     Row(
         modifier
             .padding(8.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(color = MaterialTheme.colors.surface)
+            .background(color = MaterialTheme.colors.onSurface.copy(alpha = 0.05f))
             .clickable(onClick = {})
             .padding(16.dp)
     ) {
@@ -85,6 +129,9 @@ fun PhotographerCard(modifier: Modifier = Modifier) {
             color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)
         ) {
             // Image goes here
+            Box(contentAlignment = Center) {
+                Text("#$index")
+            }
         }
         Column(
             Modifier
@@ -103,6 +150,14 @@ fun PhotographerCard(modifier: Modifier = Modifier) {
 @Composable
 fun PhotographerCardPreview() {
     LayoutsAppTheme {
-        PhotographerCard()
+        PhotographerCard(index = 1)
+    }
+}
+
+@Preview
+@Composable
+fun LayoutsCodelabPreview() {
+    LayoutsAppTheme {
+        LayoutsCodelab()
     }
 }
