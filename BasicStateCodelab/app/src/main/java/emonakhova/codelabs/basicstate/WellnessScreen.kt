@@ -17,21 +17,18 @@ import emonakhova.codelabs.basicstate.ui.theme.BasicStateCodelabTheme
 
 @Composable
 fun WellnessScreen(modifier: Modifier = Modifier) {
-    StatefulCounter(modifier)
+    Column(modifier = modifier) {
+        StatefulCounter()
+        WellnessTasksList()
+    }
 }
 
 @Composable
-private fun StatefulCounter(modifier: Modifier) {
+private fun StatefulCounter(modifier: Modifier = Modifier) {
     var count by rememberSaveable { mutableStateOf(0) }
-    var showTask by rememberSaveable { mutableStateOf(true) }
     StatelessCounter(
         count = count,
-        showTask = showTask,
-        onCloseWellnessTaskClicked = { showTask = false },
-        onAddGlassOfWaterClicked = {
-            showTask = true
-            count++
-        },
+        onAddGlassOfWaterClicked = { count++ },
         onClearWaterCounterClicked = { count = 0 },
         modifier = modifier
     )
@@ -40,20 +37,12 @@ private fun StatefulCounter(modifier: Modifier) {
 @Composable
 fun StatelessCounter(
     count: Int,
-    showTask: Boolean,
-    onCloseWellnessTaskClicked: () -> Unit,
     onAddGlassOfWaterClicked: () -> Unit,
     onClearWaterCounterClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(16.dp)) {
         if (count > 0) {
-            if (showTask) {
-                WellnessTaskItem(
-                    onClose = onCloseWellnessTaskClicked,
-                    taskName = "Have you taken your 15 minute walk today?"
-                )
-            }
             Text(
                 text = "You've had $count glasses.",
                 modifier = modifier.padding(16.dp)
