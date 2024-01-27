@@ -1,4 +1,4 @@
-package emonakhova.codelabs.basicstate
+package emonakhova.codelabs.basicstate.compose
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding

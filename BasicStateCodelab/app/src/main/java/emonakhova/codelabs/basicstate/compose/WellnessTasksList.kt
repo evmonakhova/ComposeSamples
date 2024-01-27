@@ -1,4 +1,4 @@
-package emonakhova.codelabs.basicstate
+package emonakhova.codelabs.basicstate.compose
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
