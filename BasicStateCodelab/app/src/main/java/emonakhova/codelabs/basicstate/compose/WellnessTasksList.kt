@@ -11,14 +11,17 @@ import emonakhova.codelabs.basicstate.models.WellnessTask
 fun WellnessTasksList(
     list: List<WellnessTask>,
     modifier: Modifier = Modifier,
-    onCloseTask: (WellnessTask) -> Unit
+    onCloseTask: (WellnessTask) -> Unit,
+    onCheckedChange: (WellnessTask) -> Unit
 ) {
     LazyColumn {
         items(items = list, key = { task -> task.id }) { task ->
             WellnessTaskItem(
                 taskName = task.label,
+                isChecked = task.isChecked,
                 modifier = modifier,
-                onClose = { onCloseTask(task) }
+                onClose = { onCloseTask(task) },
+                onCheckedChange = { onCheckedChange(task) }
             )
         }
     }
@@ -30,7 +33,8 @@ fun WellnessTasksList() {
     WellnessTasksList(
         list = listOf(),
         modifier = Modifier,
-        onCloseTask = {}
+        onCloseTask = {},
+        onCheckedChange = {}
     )
 }
 

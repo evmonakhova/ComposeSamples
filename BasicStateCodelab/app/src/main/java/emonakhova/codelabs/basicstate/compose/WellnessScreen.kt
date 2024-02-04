@@ -26,7 +26,8 @@ fun WellnessScreen(
         StatefulCounter()
         WellnessTasksList(
             list = viewModel.tasks,
-            onCloseTask = { task -> viewModel.removeTask(task) }
+            onCloseTask = { task -> viewModel.removeTask(task) },
+            onCheckedChange = { task -> viewModel.onCheckedChange(task) }
         )
     }
 }

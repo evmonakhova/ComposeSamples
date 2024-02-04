@@ -9,32 +9,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-
-
-@Composable
-fun WellnessTaskItem(
-    taskName: String,
-    modifier: Modifier = Modifier,
-    onClose: () -> Unit
-) {
-    var isCheckedState by rememberSaveable { mutableStateOf(false) }
-
-    WellnessTaskItem(
-        taskName = taskName,
-        isChecked = isCheckedState,
-        onCheckedChange = { newIsChecked -> isCheckedState = newIsChecked },
-        onClose = onClose,
-        modifier = modifier
-    )
-}
 
 @Composable
 fun WellnessTaskItem(
