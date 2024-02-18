@@ -28,6 +28,7 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.google.samples.apps.sunflower.R
@@ -51,7 +52,14 @@ fun PlantDetailContent(plant: Plant) {
 
     Column {
         PlantName(name = plant.name, modifier = centeringModifier)
-        WateringHeader(modifier = centeringModifier)
+        WateringHeader(
+            modifier = centeringModifier
+                .padding(top = dimensionResource(id = R.dimen.margin_normal))
+        )
+        PlantWatering(
+            wateringInterval = plant.wateringInterval,
+            modifier = centeringModifier
+        )
     }
 }
 
@@ -70,6 +78,17 @@ private fun WateringHeader(modifier: Modifier) {
         text = stringResource(id = R.string.watering_needs_prefix),
         color = MaterialTheme.colors.primaryVariant,
         fontWeight = FontWeight.Bold,
-        modifier = modifier.padding(top = dimensionResource(id = R.dimen.margin_normal))
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun PlantWatering(wateringInterval: Int, modifier: Modifier) {
+    val wateringIntervalText = pluralStringResource(
+        R.plurals.watering_needs_suffix, wateringInterval, wateringInterval
+    )
+    Text(
+        text = wateringIntervalText,
+        modifier = modifier
     )
 }
