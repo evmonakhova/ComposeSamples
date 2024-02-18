@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.sunflower.plantdetail
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -27,6 +28,8 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import com.google.samples.apps.sunflower.R
 import com.google.samples.apps.sunflower.data.Plant
 
@@ -41,17 +44,32 @@ fun PlantDetailDescription(plantState: State<Plant?>) {
 
 @Composable
 fun PlantDetailContent(plant: Plant) {
-    PlantName(plant.name)
+    val centeringModifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = dimensionResource(id = R.dimen.margin_small))
+        .wrapContentWidth(Alignment.CenterHorizontally)
+
+    Column {
+        PlantName(name = plant.name, modifier = centeringModifier)
+        WateringHeader(modifier = centeringModifier)
+    }
 }
 
 @Composable
-private fun PlantName(name: String) {
+private fun PlantName(name: String, modifier: Modifier) {
     Text(
         text = name,
         style = MaterialTheme.typography.h5,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_small))
-            .wrapContentWidth(Alignment.CenterHorizontally)
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun WateringHeader(modifier: Modifier) {
+    Text(
+        text = stringResource(id = R.string.watering_needs_prefix),
+        color = MaterialTheme.colors.primaryVariant,
+        fontWeight = FontWeight.Bold,
+        modifier = modifier.padding(top = dimensionResource(id = R.dimen.margin_normal))
     )
 }
