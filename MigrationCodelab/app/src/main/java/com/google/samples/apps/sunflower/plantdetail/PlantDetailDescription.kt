@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.sunflower.plantdetail
 
+import android.content.res.Configuration
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import com.google.samples.apps.sunflower.R
 import com.google.samples.apps.sunflower.data.Plant
+import com.google.samples.apps.sunflower.theme.SunflowerTheme
 
 @Composable
 fun PlantDetailDescription(plantState: State<Plant?>) {
@@ -72,6 +74,7 @@ private fun PlantName(name: String, modifier: Modifier) {
     Text(
         text = name,
         style = MaterialTheme.typography.h5,
+        color = MaterialTheme.colors.primary,
         modifier = modifier
     )
 }
@@ -93,6 +96,7 @@ private fun PlantWatering(wateringInterval: Int, modifier: Modifier) {
     )
     Text(
         text = wateringIntervalText,
+        color = MaterialTheme.colors.onSurface,
         modifier = modifier
     )
 }
@@ -115,20 +119,19 @@ private fun PlantDescription(description: String, modifier: Modifier) {
     )
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun PlantDetailContentPreview() {
-    MaterialTheme {
-        val plant = Plant(
-            plantId = "id",
-            name = "Apple",
-            description = "HTML<br><br>description",
-            growZoneNumber = 3,
-            wateringInterval = 30,
-            imageUrl = ""
-        )
-        MaterialTheme {
-            PlantDetailContent(plant)
-        }
+    val plant = Plant(
+        plantId = "id",
+        name = "Apple",
+        description = "HTML<br><br>description",
+        growZoneNumber = 3,
+        wateringInterval = 30,
+        imageUrl = ""
+    )
+    SunflowerTheme {
+        PlantDetailContent(plant)
     }
 }
